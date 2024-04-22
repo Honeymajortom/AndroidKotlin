@@ -260,26 +260,27 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .listener(object : RequestListener<Drawable> {
+
+
                             override fun onLoadFailed(
-                                @Nullable e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
+                                p0: GlideException?,
+                                p1: Any?,
+                                p2: Target<Drawable>,
+                                p3: Boolean
                             ): Boolean {
                                 // log exception
-                                Log.e("TAG", "Error loading image", e)
+                                Log.e("TAG", "Error loading image")
                                 return false // important to return false so the error placeholder can be placed
                             }
 
                             override fun onResourceReady(
-                                resource: Drawable,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
+                                p0: Drawable,
+                                p1: Any,
+                                p2: Target<Drawable>?,
+                                p3: DataSource,
+                                p4: Boolean
                             ): Boolean {
-
-                                val bitmap: Bitmap = resource.toBitmap()
+                                val bitmap: Bitmap = p0.toBitmap()
 
                                 mImagePath = saveImageToInternalStorage(bitmap)
                                 Log.i("ImagePath", mImagePath)
