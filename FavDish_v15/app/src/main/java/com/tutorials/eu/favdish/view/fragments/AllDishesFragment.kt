@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tutorials.eu.favdish.R
 import com.tutorials.eu.favdish.application.FavDishApplication
 import com.tutorials.eu.favdish.databinding.FragmentAllDishesBinding
 import com.tutorials.eu.favdish.view.activities.AddUpdateDishActivity
+import com.tutorials.eu.favdish.view.activities.MainActivity
 import com.tutorials.eu.favdish.view.adapters.FavDishAdapter
 import com.tutorials.eu.favdish.viewmodel.FavDishViewModel
 import com.tutorials.eu.favdish.viewmodel.FavDishViewModelFactory
@@ -65,6 +67,21 @@ class AllDishesFragment : Fragment() {
     ): View? {
         mBinding = FragmentAllDishesBinding.inflate(inflater, container, false)
         return mBinding.root
+    }
+
+    fun dishDetails(){
+        findNavController().navigate(AllDishesFragmentDirections.actionAllDishesToDishDetails())
+
+        if(requireActivity() is MainActivity){
+            (activity as MainActivity?)?.hideBottomNavigationView()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity){
+            (activity as MainActivity?)?.showBottomNavigationView()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
