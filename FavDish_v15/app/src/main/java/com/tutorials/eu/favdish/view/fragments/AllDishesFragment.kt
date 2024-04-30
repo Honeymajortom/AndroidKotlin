@@ -2,14 +2,14 @@ package com.tutorials.eu.favdish.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.*
-import android.widget.GridLayout
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tutorials.eu.favdish.R
@@ -21,7 +21,6 @@ import com.tutorials.eu.favdish.view.activities.MainActivity
 import com.tutorials.eu.favdish.view.adapters.FavDishAdapter
 import com.tutorials.eu.favdish.viewmodel.FavDishViewModel
 import com.tutorials.eu.favdish.viewmodel.FavDishViewModelFactory
-import com.tutorials.eu.favdish.viewmodel.HomeViewModel
 
 class AllDishesFragment : Fragment() {
 
@@ -49,7 +48,7 @@ class AllDishesFragment : Fragment() {
 //                for (item in it) {
 //                    Log.i("Dish Title", "${item.id} :: ${item.title}")
 //                }
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     mBinding.rvDishesList.visibility = View.VISIBLE
                     mBinding.tvNoDishesAddedYet.visibility = View.GONE
                     favDishAdapter.dishesList(it)
@@ -70,19 +69,21 @@ class AllDishesFragment : Fragment() {
         return mBinding.root
     }
 
-    fun dishDetails(favDish: FavDish){
-        findNavController().navigate(AllDishesFragmentDirections.actionAllDishesToDishDetails(
-            favDish
-        ))
+    fun dishDetails(favDish: FavDish) {
+        findNavController().navigate(
+            AllDishesFragmentDirections.actionAllDishesToDishDetails(
+                favDish
+            )
+        )
 
-        if(requireActivity() is MainActivity){
+        if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.hideBottomNavigationView()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if(requireActivity() is MainActivity){
+        if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavigationView()
         }
     }

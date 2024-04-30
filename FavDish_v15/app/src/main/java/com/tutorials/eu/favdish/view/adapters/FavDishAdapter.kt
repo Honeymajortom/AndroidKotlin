@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.tutorials.eu.favdish.databinding.ItemDishLayoutBinding
 import com.tutorials.eu.favdish.model.entities.FavDish
 import com.tutorials.eu.favdish.view.fragments.AllDishesFragment
+import com.tutorials.eu.favdish.view.fragments.FavouriteDishesFragment
 
 class FavDishAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<FavDishAdapter.ViewHolder>() {
@@ -40,6 +41,9 @@ class FavDishAdapter(private val fragment: Fragment) :
 
         p0.itemView.setOnClickListener{
             if(fragment is AllDishesFragment){
+                fragment.dishDetails(dish)
+            }
+            if(fragment is FavouriteDishesFragment){
                 fragment.dishDetails(dish)
             }
         }
