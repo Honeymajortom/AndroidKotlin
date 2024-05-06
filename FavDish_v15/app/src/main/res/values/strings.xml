@@ -43,5 +43,13 @@
     <string name="lbl_estimate_cooking_time">The approximate time required to cook the dish is %1$s minutes.</string>
     <string name="msg_added_to_favourites">Added to Favourites!</string>
     <string name="msg_removed_from_favourites">Removed from Favourites</string>
+    <string name="action_edit_dish">Edit Dish</string>
+    <string name="action_delete_dish">Delete Dish</string>
+    <string name="title_edit_dish">Edit Dish</string>
+    <string name="title_add_dish">Add Dish</string>
+    <string name="title_delete_dish">Delete Dish</string>
+    <string name="msg_delete_dish_dialog">Are you sure you want to delete %1$s.?</string>
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
     <!--END-->
 </resources>

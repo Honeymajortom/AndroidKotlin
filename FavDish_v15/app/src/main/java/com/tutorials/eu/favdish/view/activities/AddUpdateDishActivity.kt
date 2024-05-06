@@ -18,7 +18,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -52,7 +51,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.util.*
+import java.util.UUID
 
 /**
  * A screen where we can add and update the dishes.
@@ -68,7 +67,9 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
     // START
     // A global variable for the custom list dialog.
     private lateinit var mCustomListDialog: Dialog
-    // END
+
+    private var mFavDishDetails : FavDish? = null
+
     private val mFavDishViewModel: FavDishViewModel by viewModels{
         FavDishViewModelFactory((application as FavDishApplication).repository)
     }
@@ -80,6 +81,20 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(mBinding.root)
 
         setupActionBar()
+
+        if(intent.hasExtra(Constants.EXTRA_DISH_DETAILS)){
+            mFavDishDetails = intent.getParcelableExtra(Constants.EXTRA_DISH_DETAILS)
+        }
+
+        mFavDishDetails?.let {
+            if(it.id != 0){
+                mImagePath = it.image
+                Glide.with(this@AddUpdateDishActivity)
+                    .load(mImagePath)
+                    .centerCrop()
+                    .into(mBinding.ivDishImage)
+            }
+        }
 
         mBinding.ivAddDishImage.setOnClickListener(this@AddUpdateDishActivity)
 
@@ -98,7 +113,6 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
 
             R.id.iv_add_dish_image -> {
-
                 customImageSelectionDialog()
                 return
             }
@@ -122,7 +136,6 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.et_cooking_time -> {
-
                 customItemsListDialog(
                     resources.getString(R.string.title_select_dish_cooking_time),
                     Constants.dishCookTime(),
@@ -200,25 +213,42 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                         ).show()
                     }
                     else -> {
+                        var dishID = 0
+                        var imageSource = Constants.DISH_IMAGE_SOURCE_LOCAL
+                        var favouriteDish = false
+
+                        mFavDishDetails?.let {
+                            if(it.id != 0){
+                                dishID = it.id
+                                imageSource = it.imageSource
+                                favouriteDish = it.favouriteDish
+                            }
+                        }
+
                         val favDishDetails: FavDish = FavDish(
                             mImagePath,
-                            Constants.DISH_IMAGE_SOURCE_LOCAL,
+                            imageSource,
                             title,
                             type,
                             category,
                             ingredients,
                             cookingTimeInMinutes,
                             cookingDirection,
-                            false
+                            favouriteDish,
+                            dishID
                         )
 
-                        mFavDishViewModel.insert(favDishDetails)
-                        Toast.makeText(
-                            this@AddUpdateDishActivity,
-                            "You successfully added your favourite dish details",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("Ahhh!", "Yamete Kudasai")
+                        if(dishID == 0){
+                            mFavDishViewModel.insert(favDishDetails)
+                            Toast.makeText(
+                                this@AddUpdateDishActivity,
+                                "You successfully added your favourite dish details",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("Ahhh!", "Yamete Kudasai")
+                        } else {
+                            mFavDishViewModel.update(favDishDetails)
+                        }
                         finish()
                     }
                 }
@@ -227,20 +257,6 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    /**
-     * Receive the result from a previous call to
-     * {@link #startActivityForResult(Intent, int)}.  This follows the
-     * related Activity API as described there in
-     * {@link Activity#onActivityResult(int, int, Intent)}.
-     *
-     * @param requestCode The integer request code originally supplied to
-     *                    startActivityForResult(), allowing you to identify who this
-     *                    result came from.
-     * @param resultCode The integer result code returned by the child activity
-     *                   through its setResult().
-     * @param data An Intent, which can return result data to the caller
-     *               (various data can be attached to Intent "extras").
-     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -327,7 +343,15 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
      */
     private fun setupActionBar() {
         setSupportActionBar(mBinding.toolbarAddDishActivity)
-
+        if(mFavDishDetails != null && mFavDishDetails!!.id != 0){
+            supportActionBar?.let {
+                it.title = resources.getString(R.string.title_edit_dish)
+            }
+        } else {
+            supportActionBar?.let {
+                it.title = resources.getString(R.string.title_add_dish)
+            }
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
 

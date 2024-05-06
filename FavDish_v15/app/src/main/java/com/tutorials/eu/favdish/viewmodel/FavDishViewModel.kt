@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.tutorials.eu.favdish.model.database.FavDishRepository
 import com.tutorials.eu.favdish.model.entities.FavDish
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 
 class FavDishViewModel(private val repository: FavDishRepository): ViewModel() {
 
@@ -23,6 +22,10 @@ class FavDishViewModel(private val repository: FavDishRepository): ViewModel() {
     }
 
     val favouriteDishes: LiveData<List<FavDish>> = repository.favouriteDishes.asLiveData()
+
+    fun delete(dish: FavDish) = viewModelScope.launch{
+        repository.deleteFavDishData(dish)
+    }
 }
 
 
