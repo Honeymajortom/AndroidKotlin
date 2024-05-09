@@ -476,10 +476,8 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
      * @param bitmap
      */
     private fun saveImageToInternalStorage(bitmap: Bitmap): String {
-
         // Get the context wrapper instance
         val wrapper = ContextWrapper(applicationContext)
-
         // Initializing a new file
         // The bellow line return a directory in internal storage
         /**
@@ -489,39 +487,27 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
          * same user ID).
          */
         var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE)
-
         // Mention a file name to save the image
         file = File(file, "${UUID.randomUUID()}.jpg")
 
         try {
             // Get the file output stream
             val stream: OutputStream = FileOutputStream(file)
-
             // Compress bitmap
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-
             // Flush the stream
             stream.flush()
-
             // Close stream
             stream.close()
         } catch (e: IOException) { // Catch the exception
             e.printStackTrace()
         }
-
         // Return the saved image absolute path
         return file.absolutePath
     }
 
-    /**
-     * A function to launch the custom list dialog.
-     *
-     * @param title - Define the title at runtime according to the list items.
-     * @param itemsList - List of items to be selected.
-     * @param selection - By passing this param you can identify the list item selection.
-     */
     private fun customItemsListDialog(title: String, itemsList: List<String>, selection: String) {
-        // TODO Step 2: Replace the dialog variable with the global variable.
+
         mCustomListDialog = Dialog(this@AddUpdateDishActivity)
 
         val binding: DialogCustomListBinding = DialogCustomListBinding.inflate(layoutInflater)

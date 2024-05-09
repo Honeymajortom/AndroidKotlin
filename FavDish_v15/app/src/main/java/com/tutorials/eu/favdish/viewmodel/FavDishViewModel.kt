@@ -31,7 +31,6 @@ class FavDishViewModel(private val repository: FavDishRepository): ViewModel() {
         repository.filteredListDishes(value).asLiveData()
 }
 
-
 class FavDishViewModelFactory(private val repository: FavDishRepository): ViewModelProvider.Factory{
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
