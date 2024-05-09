@@ -54,5 +54,11 @@
 
     <string name="action_filter_dishes">Filter Dishes</string>
     <string name="title_select_item_to_filter">Select item to filter</string>
+
+    <string name="msg_already_added_to_favourites">You have already added the dish to your favourites!</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="share_dish">Share Dish</string>
+
+
     <!--END-->
 </resources>
