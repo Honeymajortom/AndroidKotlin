@@ -60,12 +60,8 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mBinding: ActivityAddUpdateDishBinding
 
-    // A global variable for stored image path.
     private var mImagePath: String = ""
 
-    // TODO Step 1: Define the custom list dialog global and initialize it in the function as it is define previously.
-    // START
-    // A global variable for the custom list dialog.
     private lateinit var mCustomListDialog: Dialog
 
     private var mFavDishDetails : FavDish? = null
